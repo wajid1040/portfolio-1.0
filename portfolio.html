@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wajid.com</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;  /* Ensures body fills the full viewport */
+}
+
+#main-content {
+    flex: 1;  /* Makes this wrapper expand to fill available space, pushing footer to bottom */
+}
+/* Navigation */
+nav {
+    position: fixed; 
+    top:0; 
+    width:100%; 
+    background: transparent;  /* Makes it fully transparent, so the hero gradient shows through */
+    /* Removed backdrop-filter: blur(10px); to eliminate the glassy effect */
+    z-index:1000; 
+    padding:1rem 5%; 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center;
+    box-shadow: none;  /* Removed shadow for a cleaner, seamless look */
+}
+.nav-logo { display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:500; font-size:1.2rem; color:white; }
+.nav-logo img { width:40px; height:40px; border-radius:50%; object-fit:cover; }
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a {
+    text-decoration:none; color:white; font-weight:500; position:relative; transition:0.3s;
+}
+.nav-links a:hover { color:#3498db; transform:translateY(-2px);}
+.nav-links a::after {
+    content:''; position:absolute; width:0; height:2px; bottom:-5px; left:0; background:#3498db; transition:width 0.3s ease;
+}
+.nav-links a:hover::after { width:100%; }
+/* Scrolled nav state */
+nav.scrolled {
+    background: black !important;
+    color: white;  /* Change nav text to white for contrast */
+}
+nav.scrolled .nav-links a {
+    color: white;  /* Ensure links are white on the gradient */
+}
+nav.scrolled .nav-links a:hover {
+    color: #f0f8ff;  /* Optional: Lighter hover color for better visibility */
+}
+
+/* Hero Section - Fixed to full width, background contained */
+#home {
+    height:100vh; width:100vw; position:relative; 
+    background:linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; color:white; overflow:hidden;
+    margin:0; box-sizing:border-box;
+}
+#home {
+    height:100vh; 
+    width:100vw; 
+    position:relative; 
+    Background:black !important; 
+    color:white; 
+    overflow:hidden;
+    margin:0; 
+    box-sizing:border-box;
+    /* Add these lines below to fix the width issue */
+    max-width: none;  /* Removes the 1200px limit */
+    padding: 0;  /* Optional: Removes side padding for full-width background; adjust if needed */
+}
+#home::before {
+    content:''; position:absolute; top:0; left:0; right:0; bottom:0;
+    Background:black;
+    z-index:-1;
+}
+.hero-container {
+    height:100%; width:100%; display:flex; align-items:center; justify-content:space-between; padding:0 5%;
+    box-sizing:border-box;
+}
+.hero-content { max-width:600px; }
+.hero-content h1 { font-size:clamp(2.5rem,5vw,4rem); margin-bottom:1rem;margin-top:5rem;font-weight:700; }
+.hero-content .role { font-size:4rem; margin-bottom:1rem; opacity:0.9;font-weight:700;color: #0096FF; }
+.typing-text { font-size:1.3rem; font-weight:300; min-height:50px; margin-bottom:3rem; }
+.hero-image { width:400px; height:400px; border-radius:50%; border:5px solid rgba(255,255,255,0.3); object-fit:cover; box-shadow:0 20px 40px rgba(0,0,0,0.3); animation:float 6s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-20px);} }
+.social-icons { display:flex; gap:1rem; margin-top:7rem;margin-bottom:1rem; }
+.social-icons a {
+    width:50px; height:50px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center;
+    color:white; text-decoration:none; transition:0.3s; backdrop-filter:blur(10px);
+}
+.social-icons a:hover { background:rgba(255,255,255,0.4); transform:translateY(-5px) scale(1.1); }
+
+/* Sections */
+section { padding:120px 5% 80px; max-width:1200px; margin:0 auto; }
+h2 { font-size:clamp(2rem,4vw,3rem); text-align:center; margin-bottom:3rem; color: #000000; }
+
+/* Education Timeline */
+.timeline { position:relative; max-width:800px; margin:0 auto 3rem; }
+.timeline::before { content:''; position:absolute; left:50%; transform:translateX(-50%); width:4px; height:100%; background:black;}
+.timeline-item { display:flex; margin:3rem 0; position:relative; }
+.timeline-item:nth-child(odd) { justify-content:flex-end; padding-right:0; padding-left:50%; }
+.timeline-item:nth-child(even) { justify-content:flex-start; padding-left:0; padding-right:50%; }
+.timeline-content { width:400px; background:white; padding:2rem; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.1); position:relative; transition:all 0.3s ease; }
+.timeline-content:hover { transform:translateY(-10px); box-shadow:0 20px 40px rgba(0,0,0,0.15);}
+.timeline-icon { position:absolute; width:50px; height:50px; background:orange; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:1.2rem; left:50%; transform:translateX(-50%); z-index:2; }
+.timeline-item:nth-child(odd) .timeline-icon { right:-25px; }
+.timeline-item:nth-child(even) .timeline-icon { left:-25px; }
+
+/* Certificates - Updated to certificate shape and centered */
+/* Certificates - Updated to match project card style but smaller */
+./* Certificates - Boxes for image previews, text below */
+.certificates-section { margin-top:4rem; text-align:center; }
+.certificates-section h3 { 
+    font-size: clamp(2rem, 4vw, 3rem); 
+    margin-bottom: 3rem; 
+    background: black; 
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    text-align: center;  /* Added this line to center the heading */
+}
+.certificates { 
+    display: grid;  /* Grid for 3 columns */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 2rem; 
+    justify-content: center; 
+}
+.cert-item {  /* Container: box on top, text below */
+    display: flex; 
+    flex-direction: column;  /* Vertical stack */
+    align-items: center; 
+    cursor: pointer; 
+    transition: all 0.4s ease-out;
+    position: relative; 
+}
+.cert-item:hover { 
+    transform: scale(1.05) translateY(-10px);  /* Lift on hover */
+}
+.cert-box {  /* The rectangle box (for image previews) */
+    width: 100%;  /* Fits grid cell */
+    height: 240px;  /* Rectangular, smaller than projects */
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);  /* Subtle background */
+    border-radius: 15px; 
+    border: 2px solid rgba(102,126,234,0.2); 
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: all 0.4s ease-out; 
+}
+/* Add this inside your <style> tags */
+.cert-box img {
+    width: 100%;      /* Prevents width from exceeding the box */
+    height: 100%;     /* Prevents height from exceeding the box */
+    object-fit: cover;    /* Scales the image to fill the box while maintaining aspect ratio (crops if needed) */
+    border-radius: 13px;  /* Optional: Matches the box's border-radius for a seamless look */
+    display: block;       /* Removes any default inline spacing */
+}
+.cert-box:hover { 
+    box-shadow: 0 20px 40px rgba(102,126,234,0.4); 
+    border-color: #667eea; 
+}
+.cert-item span {  /* Text label below the box */
+    margin-top: 1rem;  /* Space below the box */
+    font-weight: 600; 
+    color: #2c3e50; 
+    font-size: 0.9rem; 
+    text-align: center; 
+    transition: color 0.3s ease; 
+}
+.cert-item:hover span { 
+    color: #667eea;  /* Highlight text on hover */
+}
+/* Skills */
+.skill-logo {
+    width: 70px;       /* Increased from 60px to reduce cramped look */
+    height: 70px;      /* Increased from 60px */
+    margin-bottom: 2rem;  /* Increased from 0.5rem for more breathing room */
+    transition: all 0.3s ease;  /* Smooth hover transition */
+    object-fit: contain;  /* Keeps logos proportional without cropping */
+    display: block;     /* Removes any spacing issues */
+}
+.skill-item:hover .skill-logo { 
+    transform: scale(1.2) rotate(10deg);  /* Same hover effect as before, but on the image */
+    /* No background or color needed—logos are in original colors */
+}
+.skill-list {
+    display: flex;           /* Enables flexbox for horizontal layout */
+    flex-direction: row;     /* Arranges items horizontally (left to right) */
+    gap: 5rem;               /* Adds space between skill items (adjust as needed) */
+    flex-wrap: wrap;         /* Allows wrapping to next line if too many items */
+    justify-content: flex-start;  /* Aligns items to the left (or center if preferred) */
+    align-items: center;     /* Vertically centers icons and text */
+margin-bottom: 4rem;
+}
+.skill-category {
+    margin-bottom: 6rem;  /* Adds space between each category (e.g., between "Programming Languages" and "Web Technologies") */
+}
+.skill-category h3 {
+    margin-bottom: 3rem;  /* Adds space between the heading and the icons below it */
+font-size: 1.5rem;    /* NEW: Increases font size (from default ~1.17rem to 1.8rem for more prominence) */
+    font-weight: 600;     /* NEW: Increases font weight (from normal to semi-bold for better emphasis) */
+}
+.skill-item span {
+    font-weight: 600;  /* Increases font weight from normal to semi-bold for the text below icons */
+}
+#skills {
+    padding-bottom: 10px;  /* Reduced from 80px to 40px for a tighter gap */
+}
+/* Projects */
+.projects-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:2rem; max-width:1200px; margin-left:auto; margin-right:auto;}
+.project-card { height:280px; border-radius:15px; overflow:hidden; position:relative; cursor:pointer; transition:all 0.3s ease; box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+.project-card:hover { transform:translateY(-15px); box-shadow:0 25px 50px rgba(0,0,0,0.2);}
+.project-overlay { position:absolute; top:0; left:0; right:0; bottom:0; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; opacity:0; transition:opacity 0.3s ease; padding:2rem; text-align:center; }
+.project-card:hover .project-overlay { opacity:1; }
+.project-card:nth-child(1) .project-overlay { background:rgba(52,152,219,0.95);}
+.project-card:nth-child(2) .project-overlay { background:rgba(46,204,113,0.95);}
+.project-card:nth-child(3) .project-overlay { background:rgba(155,89,182,0.95);}
+.projects-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+.project-card img {
+    width: 100%;      /* Makes image fill the card width */
+    height: 100%;     /* Makes image fill the card height */
+    object-fit: cover; /* Scales and crops the image to fit without distortion */
+    display: block;    /* Removes any default spacing */
+    border-radius: 15px; /* Matches the card's border-radius for seamless edges */
+}
+/* Optional: If you want a subtle gradient overlay on the image for better overlay text contrast */
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(52,152,219,0.1) 0%, rgba(155,89,182,0.1) 100%); /* Subtle tint */
+    z-index: 1; /* Places it above the image but below the overlay */
+    pointer-events: none; /* Doesn't interfere with clicks */
+}
+.project-overlay {
+    z-index: 2; /* Ensures overlay is above the gradient */
+}
+#projects {
+    padding-top: 20px;  /* Reduced from 120px (default) to 80px for a tighter gap */
+}
+/* Contact - Kept exactly as you liked */
+.contact-content { max-width:600px; margin:0 auto; text-align:center; }
+.send-btn { background:black; color:white; border:none; padding:1rem 3rem; font-size:1.1rem; border-radius:50px; cursor:pointer; transition:all 0.3s ease; margin:2rem 0; }
+.send-btn:hover { transform:translateY(-3px); box-shadow:0 15px 30px rgba(102,126,234,0.4);}
+.contact-form { display:none; background:white; padding:3rem; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,0.1); margin-top:2rem; transition:max-height 0.5s ease; }
+.form-group { margin-bottom:1.5rem; }
+.form-group input, .form-group textarea { width:100%; padding:1rem; border:2px solid #eee; border-radius:10px; font-family:inherit; transition:border-color 0.3s ease;}
+.form-group input:focus, .form-group textarea:focus { outline:none; border-color:#667eea; }
+#contact{
+    padding-top: 20px;  /* Reduced from 120px (default) to 80px for a tighter gap */
+padding-bottom: 5px;
+}
+
+/* Footer - Updated to hero section gradient */
+footer { 
+    background: black !important; 
+    color: white; 
+    text-align: center; 
+    padding: 3rem 5% 0;  /* Changed bottom padding from 1rem to 0 to remove space below */
+    width: 100vw;  /* Forces full viewport width */
+    margin-left: calc(-50vw + 50%);  /* Centers the full-width element on the page */
+    margin-bottom: 0;  /* Ensures no extra margin below */
+    position: relative;  /* Ensures it behaves like a block element */
+    box-sizing: border-box;  /* Includes padding in width calculations */
+padding: 2rem 5% 0;
+padding-bottom: 5px;
+}
+.footer-quote { font-style:italic; margin-bottom:2rem; opacity:0.9; }
+.footer-social { display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; }
+.footer-social a { width:45px; height:45px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; transition:all 0.3s ease;}
+.footer-social a:hover { background:rgba(255,255,255,0.4); transform:translateY(-3px); }
+
+/* Lightbox */
+.lightbox { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; align-items:center; justify-content:center; }
+.lightbox.active { display:flex; }
+.lightbox img { max-width:90%; max-height:90%; border-radius:10px; }
+.close-lightbox { position:absolute; top:30px; right:30px; color:white; font-size:2rem; cursor:pointer; }
+
+/* Responsive */
+@media (max-width:1024px) { .projects-grid{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:768px) {
+    .nav-links { display:none; }
+    #home { height:auto;}
+    .hero-container { flex-direction:column; text-align:center; padding:100px 5% 50px;}
+    .hero-image { width:250px; height:250px; margin-top:2rem;}
+    .timeline::before { left:20px; }
+    .timeline-item { flex-direction:column; padding:0 !important; margin:2rem 0;}
+    .timeline-content { width:100%; margin-left:60px; }
+    .timeline-icon { left:20px !important; right:auto !important; }
+    .projects-grid { grid-template-columns:1fr;}
+    .skill-list { flex-direction:column; align-items:center;}
+    .certificates { flex-direction:column; align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div class="nav-logo" onclick="scrollToSection('home')">
+        <img src="face.png" alt="wajid">
+        <span>Shaik Abdul Wajid</span>
+    </div>
+    <ul class="nav-links">
+        <li><a href="#education" onclick="scrollToSection('education'); return false;">Education</a></li>
+        <li><a href="#skills" onclick="scrollToSection('skills'); return false;">Skills</a></li>
+        <li><a href="#projects" onclick="scrollToSection('projects'); return false;">Projects</a></li>
+        <li><a href="#contact" onclick="scrollToSection('contact'); return false;">Contact</a></li>
+    </ul>
+</nav>
+<div id="main-content">
+<!-- Hero Section -->
+<section id="home">
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>Hi, I'm <span style="background:orange;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Wajid</span></h1>
+            <div class="role">Web Developer</div>
+            <div class="typing-text" id="typing-text"></div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+<img class="hero-image" src="profile.jpg" alt="wajid">
+    </div>
+</section>
+
+<!-- Education -->
+<section id="education">
+    <h2>Education</h2>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-icon"><i class="fas fa-graduation-cap"></i></div>
+            <div class="timeline-content">
+                <h3>Bachelor of Computer Applications</h3>
+                <h4>Vignan's Foundation for Science, Technology & Research</h4>
+                <span>Vadlamudi, Andhra Pradesh (2024 – Present)</span>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-icon"><i class="fas fa-school"></i></div>
+            <div class="timeline-content">
+                <h3>Secondary Education</h3>
+                <h4>Oxford IIT School</h4>
+                <span>Narasaraopet, Andhra Pradesh</span>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-icon"><i class="fas fa-school"></i></div>
+            <div class="timeline-content">
+                <h3>Primary Education</h3>
+                <h4>Genius English Medium School</h4>
+                <span>Vinukonda, Andhra Pradesh</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificates -->
+    <!-- Certificates -->
+<div class="certificates-section">
+    <h3>Certificates & Achievements</h3>
+    <div class="certificates">
+        <div class="cert-item" onclick="openLightbox('cert1')">
+            <div class="cert-box">
+                 <img src="html.jpg" alt="HTML"> 
+            </div>
+            <span>HTML</span>
+        </div>
+        <div class="cert-item" onclick="openLightbox('cert2')">
+            <div class="cert-box">
+                <img src="css.jpg" alt="CSS"> 
+            </div>
+            <span>CSS</span>
+        </div>
+        <div class="cert-item" onclick="openLightbox('cert3')">
+            <div class="cert-box">
+                <img src="javascript.jpg" alt="JAVASCRIPT"> 
+            </div>
+            <span>JAVA SCRIPT</span>
+        </div>
+    </div>
+</div>
+
+<!-- Skills -->
+<section id="skills">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+        <div class="skill-category">
+            <h3><i class="fas fa-code"></i> Programming Languages</h3>
+            <div class="skill-list">
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" class="skill-logo">
+                    <span>C</span>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" class="skill-logo">
+                    <span>Java</span>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" class="skill-logo">
+                    <span>JavaScript</span>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="skill-logo">
+                    <span>Python</span>
+                </div>
+            </div>
+        </div>
+        <div class="skill-category">
+            <h3><i class="fas fa-globe"></i> Web Technologies</h3>
+            <div class="skill-list">
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" class="skill-logo">
+                    <span>HTML</span>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" class="skill-logo">
+                    <span>CSS</span>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" class="skill-logo">
+                    <span>Bootstrap</span>
+                </div>
+            </div>
+        </div>
+        <div class="skill-category">
+            <h3><i class="fas fa-database"></i> Databases</h3>
+            <div class="skill-list">
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" class="skill-logo">
+                    <span>MySQL</span>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" alt="Oracle" class="skill-logo">
+                    <span>Oracle</span>
+                </div>
+            </div>
+        </div>
+        <div class="skill-category">
+            <h3><i class="fas fa-tools"></i> Applications</h3>
+            <div class="skill-list">
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="VS Code" class="skill-logo">
+                    <span>VS Code</span>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" class="skill-logo">
+                    <span>GitHub</span>
+                </div>
+                <div class="skill-item">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg" alt="Command Line" class="skill-logo">  <!-- Updated to bash for reliability -->
+                    <span>Command Line</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Projects -->
+<section id="projects">
+    <h2>My Projects</h2>
+    <p class="projects-subtitle">Learning, building, iterating — here’s what I’ve created.</p>
+    <div class="projects-grid">
+        <div class="project-card">
+            <img src="portfolio 2.png" alt="Portfolio Website">  <!-- Add this line for the image -->
+            <div class="project-overlay">
+                <h3>Portfolio Website</h3>
+                <p class="project-description">My personal web portfolio showcasing projects, skills, and contact.</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <img src="marks.png" alt="Student Marks Management">  <!-- Add this line for the image -->
+            <div class="project-overlay">
+                <h3>Student Marks Management</h3>
+                <p class="project-description">Calculates GPA, total marks, and organizes student results efficiently.</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <img src="weather.png" alt="Weather App">  <!-- Add this line for the image -->
+            <div class="project-overlay">
+                <h3>Weather App</h3>
+                <p class="project-description">Shows current weather information and forecast using APIs.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact -->
+<section id="contact">
+    <h2>Let's Work Together</h2>
+    <div class="contact-content">
+        <p>Interested in collaborating with me? I'm always open to discussing product design work or partnership opportunities. Fill in your info below and I'll get back to you soon.</p>
+        <button class="send-btn" onclick="toggleForm()">Get in Touch</button>
+        <div class="contact-form" id="contact-form">
+            <div class="form-group">
+                <input type="text" placeholder="Name*">
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Email*">
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Which project?">
+            </div>
+            <div class="form-group">
+                <textarea rows="4" placeholder="Additional details"></textarea>
+            </div>
+            <button class="send-btn" onclick="alert('Message sent!')">Send</button>
+        </div>
+    </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-quote">"Small projects, big learning, endless curiosity."</div>
+    <div class="footer-social">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+    <div>&copy; 2026 wajid. All rights reserved.</div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <span class="close-lightbox" onclick="closeLightbox()">&times;</span>
+    <img src="" alt="Certificate" id="lightbox-img">
+</div>
+
+<script>
+// Smooth Scroll
+function scrollToSection(id){
+    document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+// Typing Animation
+const typingTexts = [
+    "I develop clean and functional web apps.",
+"I work with HTML, CSS, JavaScript, and Bootstrap.",
+    "I enjoy turning ideas into simple, functional websites.",
+];
+let typingIndex = 0;
+let charIndex = 0;
+const typingElement = document.getElementById('typing-text');
+
+function typeText(){
+    if(charIndex < typingTexts[typingIndex].length){
+        typingElement.innerHTML += typingTexts[typingIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeText, 50);
+    }else{
+        setTimeout(eraseText, 2000);
+    }
+}
+function eraseText(){
+    if(charIndex > 0){
+        typingElement.innerHTML = typingTexts[typingIndex].substring(0,charIndex-1);
+        charIndex--;
+        setTimeout(eraseText,30);
+    }else{
+        typingIndex = (typingIndex+1) % typingTexts.length;
+        setTimeout(typeText,500);
+    }
+}
+document.addEventListener("DOMContentLoaded", typeText);
+
+// Contact form toggle
+function toggleForm(){
+    const form = document.getElementById('contact-form');
+    if(form.style.display === "block") form.style.display = "none";
+    else form.style.display = "block";
+}
+
+// Lightbox
+function openLightbox(cert){
+    const img = document.getElementById('lightbox-img');
+    // Map cert IDs to actual certificate image paths
+    const certImages = {
+        'cert1': 'html.jpg',
+        'cert2': 'css.jpg', 
+        'cert3': 'javascript.jpg'
+    };
+    img.src = certImages[cert] || 'https://via.placeholder.com/800x600.png?text=No+Image';
+    document.getElementById('lightbox').classList.add('active');
+}
+
+function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('active');
+}
+window.addEventListener('scroll', function() {
+    const nav = document.querySelector('nav');
+    const heroHeight = document.getElementById('home').offsetHeight;  // Get hero section height (100vh)
+    
+    if (window.scrollY > heroHeight) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+});
+
+// Dynamic nav name color change on scroll
+window.addEventListener('scroll', function() {
+    const heroHeight = document.getElementById('home').offsetHeight;  // Height of hero section
+    const navName = document.querySelector('.nav-logo span');  // Targets the "Shaik Abdul Wajid" span in nav
+    
+    if (window.scrollY > heroHeight) {
+        // After scrolling past hero: Change to orange
+        navName.style.color = 'orange';
+    } else {
+        // In hero section: Revert to white (original color)
+        navName.style.color = 'white';
+    }
+});
+
+</script>
+
+</body>
+</html>
